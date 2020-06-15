@@ -1,0 +1,10 @@
+C:\Users\micro\source\repos\BMS Kommunikation v1.0\bin\Debug\BMS Kommunikation v1.0.exe.config
+C:\Users\micro\source\repos\BMS Kommunikation v1.0\bin\Debug\BMS Kommunikation v1.0.exe
+C:\Users\micro\source\repos\BMS Kommunikation v1.0\bin\Debug\BMS Kommunikation v1.0.pdb
+C:\Users\micro\source\repos\BMS Kommunikation v1.0\obj\Debug\BMS Kommunikation v1.0.csprojAssemblyReference.cache
+C:\Users\micro\source\repos\BMS Kommunikation v1.0\obj\Debug\BMS_Kommunikation_v1._0.BMSKommunikation.resources
+C:\Users\micro\source\repos\BMS Kommunikation v1.0\obj\Debug\BMS_Kommunikation_v1._0.Properties.Resources.resources
+C:\Users\micro\source\repos\BMS Kommunikation v1.0\obj\Debug\BMS Kommunikation v1.0.csproj.GenerateResource.cache
+C:\Users\micro\source\repos\BMS Kommunikation v1.0\obj\Debug\BMS Kommunikation v1.0.csproj.CoreCompileInputs.cache
+C:\Users\micro\source\repos\BMS Kommunikation v1.0\obj\Debug\BMS Kommunikation v1.0.exe
+C:\Users\micro\source\repos\BMS Kommunikation v1.0\obj\Debug\BMS Kommunikation v1.0.pdb
