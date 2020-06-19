@@ -257,62 +257,169 @@ namespace BMS_Kommunikation_v1._0
             String tmp = "";
             string[] split;
             datenString += sp.ReadExisting();
+            int iTmp = 0;
+            if (datenString.IndexOf(":X")+1== datenString.Length)// TO DO
+            {
+
+            }
             if (datenString.Contains(":X"))// Ende des Strings wurde empfangen
             {
-                if (datenString.Contains(":X"))// Ende des Strings wurde empfangen
+                if (datenString != null)
                 {
-                    if (datenString!=null)
+                    if (datenString.Length > 2)
+
                     {
-                        if (datenString.Length > 2)
+                        tmp = datenString.Substring(3, datenString.Length - 2 - 3);
+                        split = tmp.Split(new Char[] { ':' });// Zerteilt den String auf die einzelen Daten
 
+                        if (split.Length > 1)
                         {
-                            tmp = datenString.Substring(3, datenString.Length - 2-3);
-                            split = tmp.Split(new Char[] { ':' });// Zerteilt den String auf die einzelen Daten
-                            
-                            if (split.Length==7)
+                            if (split[0] != "")
                             {
                                 try
                                 {
-                                    int i = Convert.ToInt32(datenString.Substring(0, 2)) - 1;
-                                    Datensatz168p[i].mvinRef = Convert.ToDouble(split[0], new CultureInfo("en-US"));
-                                    Datensatz168p[i].aref = Convert.ToDouble(split[1], new CultureInfo("en-US"));
-                                    Datensatz168p[i].rLast = Convert.ToDouble(split[2], new CultureInfo("en-US"));
-                                    Datensatz168p[i].maxALast = Convert.ToDouble(split[3], new CultureInfo("en-US"));
-                                    Datensatz168p[i].vinRef = Convert.ToDouble(split[4], new CultureInfo("en-US"));
-                                    Datensatz168p[i].vmin = Convert.ToDouble(split[5], new CultureInfo("en-US"));
-                                    Datensatz168p[i].vmax = Convert.ToDouble(split[6], new CultureInfo("en-US"));
+                                    iTmp = Convert.ToInt32(split[0]);
                                 }
                                 catch
                                 {
-                                    Log_Text("!!!System.FormatException!!!"+ Environment.NewLine);
+                                    iTmp = 0;
+                                    Log_Text("!!!Fehler in den Daten!!!->" + split[0]+ Environment.NewLine);
                                 }
 
-                            }
-                            if (split.Length == 3)
-                            {
-                                try
+                                switch (iTmp)
                                 {
-                                    int i = Convert.ToInt32(datenString.Substring(0, 2)) - 1;
-                                    Datensatz168p[i].alast = Convert.ToDouble(split[0], new CultureInfo("en-US"));
-                                    Datensatz168p[i].vin = Convert.ToDouble(split[1], new CultureInfo("en-US"));
-                                    Datensatz168p[i].time = Convert.ToUInt64(split[2], new CultureInfo("en-US"));
-                                }
-                                catch
-                                {
-                                    Log_Text("!!!System.FormatException!!!" + Environment.NewLine);
-                                }
+                                    case 1://Fehlerfall
+                                        if (split.Length == 3)
+                                        {
+                                            try
+                                            {
+                                                int i = Convert.ToInt32(datenString.Substring(0, 2)) - 1;
+                                                if (Convert.ToString(split[1]) == "Alast")
+                                                {
+                                                    Datensatz168p[i].fehler = true;
+                                                }
+                                                if (Convert.ToString(split[1]) == "vmax")
+                                                {
+                                                    Datensatz168p[i].fehler = true;
+                                                }
+                                                if (Convert.ToString(split[1]) == "vmin")
+                                                {
+                                                    Datensatz168p[i].fehler = true;
+                                                }
+                                            }
+                                            catch
+                                            {
+                                                Log_Text("!!!System.FormatException Fehlerfall!!!" + Environment.NewLine);
+                                            }
+                                        }
+                                        else
+                                        {
+                                            Log_Text("Fehler bei der Fehlerfallmeldung" + Environment.NewLine);
+                                        }
+                                        break;
+                                    case 2://Mosfet
+                                        if (split.Length == 2)
+                                        {
+                                            try
+                                            {
+                                                int i = Convert.ToInt32(datenString.Substring(0, 2)) - 1;
+                                                if (Convert.ToString(split[1]) == "on")
+                                                {
+                                                    Datensatz168p[i].mFet = true;
 
+                                                }
+                                                if (Convert.ToString(split[1]) == "off")
+                                                {
+                                                    Datensatz168p[i].mFet = false;
+                                                }
+                                            }
+                                            catch
+                                            {
+                                                Log_Text("!!!System.FormatException Mosfet!!!" + Environment.NewLine);
+                                            }
+                                        }
+                                        else
+                                        {
+                                            Log_Text("Fehler bei der Mosfetmeldung" + Environment.NewLine);
+                                        }
+                                        break;
+                                    case 3://WhMessung
+                                        if (split.Length == 4)
+                                        {
+                                            try
+                                            {
+                                                int i = Convert.ToInt32(datenString.Substring(0, 2)) - 1;
+                                                Datensatz168p[i].alast = Convert.ToDouble(split[1], new CultureInfo("en-US"));
+                                                Datensatz168p[i].vin = Convert.ToDouble(split[2], new CultureInfo("en-US"));
+                                                Datensatz168p[i].time = Convert.ToUInt64(split[3], new CultureInfo("en-US"));
+                                            }
+                                            catch
+                                            {
+                                                Log_Text("!!!System.FormatException!!!" + Environment.NewLine);
+                                            }
+
+                                        }
+                                        else
+                                        {
+                                            Log_Text("Fehler bei der Wh Messungsmeldung" + Environment.NewLine);
+                                        }
+                                        break;
+                                    case 4://Status
+                                        try
+                                        {
+                                            if (split.Length == 8)
+                                            {
+                                                int i = Convert.ToInt32(datenString.Substring(0, 2)) - 1;
+                                                Datensatz168p[i].tmp1 = Convert.ToDouble(split[1], new CultureInfo("en-US"));
+                                                Datensatz168p[i].tmp2 = Convert.ToDouble(split[2], new CultureInfo("en-US"));
+                                                Datensatz168p[i].tmp3 = Convert.ToDouble(split[3], new CultureInfo("en-US"));
+                                                Datensatz168p[i].tmp4 = Convert.ToDouble(split[4], new CultureInfo("en-US"));
+                                                Datensatz168p[i].alast = Convert.ToDouble(split[5], new CultureInfo("en-US"));
+                                                Datensatz168p[i].vin = Convert.ToDouble(split[6], new CultureInfo("en-US"));
+                                                Datensatz168p[i].zeit = Convert.ToUInt64(split[7], new CultureInfo("en-US"));
+                                            }
+                                            else
+                                            {
+                                                Log_Text("Fehler bei der Statusmeldung" + Environment.NewLine);
+                                            }
+
+                                        }
+                                        catch
+                                        {
+                                            Log_Text("!!!System.FormatException Status!!!" + Environment.NewLine);
+                                        }
+                                        break;
+                                    case 5://Parameter
+                                        try
+                                        {
+                                            if (split.Length == 8)
+                                            {
+                                                int i = Convert.ToInt32(datenString.Substring(0, 2)) - 1;
+                                                Datensatz168p[i].mvinRef = Convert.ToDouble(split[1], new CultureInfo("en-US"));
+                                                Datensatz168p[i].aref = Convert.ToDouble(split[2], new CultureInfo("en-US"));
+                                                Datensatz168p[i].rLast = Convert.ToDouble(split[3], new CultureInfo("en-US"));
+                                                Datensatz168p[i].maxALast = Convert.ToDouble(split[4], new CultureInfo("en-US"));
+                                                Datensatz168p[i].vinRef = Convert.ToDouble(split[5], new CultureInfo("en-US"));
+                                                Datensatz168p[i].vmin = Convert.ToDouble(split[6], new CultureInfo("en-US"));
+                                                Datensatz168p[i].vmax = Convert.ToDouble(split[7], new CultureInfo("en-US"));
+                                            }
+                                            else
+                                            {
+                                                Log_Text("Fehler bei den Parameter" + Environment.NewLine);
+                                            }
+
+                                        }
+                                        catch
+                                        {
+                                            Log_Text("!!!System.FormatException Parameter!!!" + Environment.NewLine);
+                                        }
+                                        break;
+                                }
                             }
-
-                            Log_Text("Arduino Data->" + datenString + Environment.NewLine);
                         }
-                            
+                        Log_Text("Arduino Data->" + datenString + Environment.NewLine);
                     }
-                    
                 }
-
-                
-
                 datenString = "";
             }
         }

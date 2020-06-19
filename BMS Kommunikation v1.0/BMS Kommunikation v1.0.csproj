@@ -54,6 +54,7 @@
       <DependentUpon>BMS Kommunikation v1.0.cs</DependentUpon>
     </Compile>
     <Compile Include="Parameter.cs" />
+    <Compile Include="PassivBMS.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ArduinoConnectSerial.cs" />

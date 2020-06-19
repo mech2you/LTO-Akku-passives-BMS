@@ -8,3 +8,23 @@ C:\Users\micro\source\repos\BMS Kommunikation v1.0\obj\Debug\BMS Kommunikation v
 C:\Users\micro\source\repos\BMS Kommunikation v1.0\obj\Debug\BMS Kommunikation v1.0.csproj.CoreCompileInputs.cache
 C:\Users\micro\source\repos\BMS Kommunikation v1.0\obj\Debug\BMS Kommunikation v1.0.exe
 C:\Users\micro\source\repos\BMS Kommunikation v1.0\obj\Debug\BMS Kommunikation v1.0.pdb
+E:\OneDrive\arbeit\Github\LTO-Akku-passives-BMS\BMS Kommunikation v1.0\bin\Debug\BMS Kommunikation v1.0.exe.config
+E:\OneDrive\arbeit\Github\LTO-Akku-passives-BMS\BMS Kommunikation v1.0\bin\Debug\BMS Kommunikation v1.0.exe
+E:\OneDrive\arbeit\Github\LTO-Akku-passives-BMS\BMS Kommunikation v1.0\bin\Debug\BMS Kommunikation v1.0.pdb
+E:\OneDrive\arbeit\Github\LTO-Akku-passives-BMS\BMS Kommunikation v1.0\obj\Debug\BMS Kommunikation v1.0.csprojAssemblyReference.cache
+E:\OneDrive\arbeit\Github\LTO-Akku-passives-BMS\BMS Kommunikation v1.0\obj\Debug\BMS_Kommunikation_v1._0.BMSKommunikation.resources
+E:\OneDrive\arbeit\Github\LTO-Akku-passives-BMS\BMS Kommunikation v1.0\obj\Debug\BMS_Kommunikation_v1._0.Properties.Resources.resources
+E:\OneDrive\arbeit\Github\LTO-Akku-passives-BMS\BMS Kommunikation v1.0\obj\Debug\BMS Kommunikation v1.0.csproj.GenerateResource.cache
+E:\OneDrive\arbeit\Github\LTO-Akku-passives-BMS\BMS Kommunikation v1.0\obj\Debug\BMS Kommunikation v1.0.csproj.CoreCompileInputs.cache
+E:\OneDrive\arbeit\Github\LTO-Akku-passives-BMS\BMS Kommunikation v1.0\obj\Debug\BMS Kommunikation v1.0.exe
+E:\OneDrive\arbeit\Github\LTO-Akku-passives-BMS\BMS Kommunikation v1.0\obj\Debug\BMS Kommunikation v1.0.pdb
+D:\OneDrive\arbeit\Github\LTO-Akku-passives-BMS\BMS Kommunikation v1.0\bin\Debug\BMS Kommunikation v1.0.exe.config
+D:\OneDrive\arbeit\Github\LTO-Akku-passives-BMS\BMS Kommunikation v1.0\bin\Debug\BMS Kommunikation v1.0.exe
+D:\OneDrive\arbeit\Github\LTO-Akku-passives-BMS\BMS Kommunikation v1.0\bin\Debug\BMS Kommunikation v1.0.pdb
+D:\OneDrive\arbeit\Github\LTO-Akku-passives-BMS\BMS Kommunikation v1.0\obj\Debug\BMS Kommunikation v1.0.csprojAssemblyReference.cache
+D:\OneDrive\arbeit\Github\LTO-Akku-passives-BMS\BMS Kommunikation v1.0\obj\Debug\BMS_Kommunikation_v1._0.BMSKommunikation.resources
+D:\OneDrive\arbeit\Github\LTO-Akku-passives-BMS\BMS Kommunikation v1.0\obj\Debug\BMS_Kommunikation_v1._0.Properties.Resources.resources
+D:\OneDrive\arbeit\Github\LTO-Akku-passives-BMS\BMS Kommunikation v1.0\obj\Debug\BMS Kommunikation v1.0.csproj.GenerateResource.cache
+D:\OneDrive\arbeit\Github\LTO-Akku-passives-BMS\BMS Kommunikation v1.0\obj\Debug\BMS Kommunikation v1.0.exe
+D:\OneDrive\arbeit\Github\LTO-Akku-passives-BMS\BMS Kommunikation v1.0\obj\Debug\BMS Kommunikation v1.0.pdb
+D:\OneDrive\arbeit\Github\LTO-Akku-passives-BMS\BMS Kommunikation v1.0\obj\Debug\BMS Kommunikation v1.0.csproj.CoreCompileInputs.cache

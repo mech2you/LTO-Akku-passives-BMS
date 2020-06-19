@@ -28,6 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.ButtonTrennen = new System.Windows.Forms.Button();
             this.ButtonVerbinden = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
@@ -36,10 +39,8 @@
             this.ButtonSpeichern = new System.Windows.Forms.Button();
             this.ButtonAutoConnect = new System.Windows.Forms.Button();
             this.TextBoxLog = new System.Windows.Forms.TextBox();
-            this.checkBoxMosfet1 = new System.Windows.Forms.CheckBox();
-            this.checkBoxMosfet2 = new System.Windows.Forms.CheckBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.WhMessungTab = new System.Windows.Forms.TabPage();
             this.label12 = new System.Windows.Forms.Label();
             this.VinStart = new System.Windows.Forms.Label();
             this.TextBoxWhMessungVinEnde = new System.Windows.Forms.TextBox();
@@ -54,7 +55,8 @@
             this.TextBoxWhMessungAnzahl = new System.Windows.Forms.TextBox();
             this.ButtonWHMessungStop = new System.Windows.Forms.Button();
             this.ButtonWHMessungStart = new System.Windows.Forms.Button();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.Einstellungen = new System.Windows.Forms.TabPage();
+            this.CheckBoxMosfet = new System.Windows.Forms.CheckBox();
             this.label8 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
@@ -62,7 +64,6 @@
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.comboBoxAuswahl = new System.Windows.Forms.ComboBox();
             this.TextBoxmaxALast = new System.Windows.Forms.TextBox();
             this.TextBoxvinRef = new System.Windows.Forms.TextBox();
             this.TextBoxvmin = new System.Windows.Forms.TextBox();
@@ -70,11 +71,18 @@
             this.TextBoxrLast = new System.Windows.Forms.TextBox();
             this.TextBoxaref = new System.Windows.Forms.TextBox();
             this.TextBoxmvinRef = new System.Windows.Forms.TextBox();
-            this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.Status = new System.Windows.Forms.TabPage();
+            this.ChartAkkuzellen = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            this.comboBoxAuswahl = new System.Windows.Forms.ComboBox();
             this.Sync = new System.Windows.Forms.Button();
+            this.label13 = new System.Windows.Forms.Label();
+            this.label14 = new System.Windows.Forms.Label();
+            this.checkBoxAutoMode = new System.Windows.Forms.CheckBox();
             this.tabControl1.SuspendLayout();
-            this.tabPage1.SuspendLayout();
-            this.tabPage2.SuspendLayout();
+            this.WhMessungTab.SuspendLayout();
+            this.Einstellungen.SuspendLayout();
+            this.Status.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.ChartAkkuzellen)).BeginInit();
             this.SuspendLayout();
             // 
             // ButtonTrennen
@@ -150,66 +158,46 @@
             // 
             // TextBoxLog
             // 
-            this.TextBoxLog.Location = new System.Drawing.Point(1212, 180);
+            this.TextBoxLog.Location = new System.Drawing.Point(1191, 180);
             this.TextBoxLog.Multiline = true;
             this.TextBoxLog.Name = "TextBoxLog";
-            this.TextBoxLog.Size = new System.Drawing.Size(870, 796);
+            this.TextBoxLog.Size = new System.Drawing.Size(891, 898);
             this.TextBoxLog.TabIndex = 27;
-            // 
-            // checkBoxMosfet1
-            // 
-            this.checkBoxMosfet1.AutoSize = true;
-            this.checkBoxMosfet1.Location = new System.Drawing.Point(181, 63);
-            this.checkBoxMosfet1.Name = "checkBoxMosfet1";
-            this.checkBoxMosfet1.Size = new System.Drawing.Size(84, 24);
-            this.checkBoxMosfet1.TabIndex = 28;
-            this.checkBoxMosfet1.Text = "Mosfet";
-            this.checkBoxMosfet1.UseVisualStyleBackColor = true;
-            // 
-            // checkBoxMosfet2
-            // 
-            this.checkBoxMosfet2.AutoSize = true;
-            this.checkBoxMosfet2.Location = new System.Drawing.Point(181, 104);
-            this.checkBoxMosfet2.Name = "checkBoxMosfet2";
-            this.checkBoxMosfet2.Size = new System.Drawing.Size(84, 24);
-            this.checkBoxMosfet2.TabIndex = 29;
-            this.checkBoxMosfet2.Text = "Mosfet";
-            this.checkBoxMosfet2.UseVisualStyleBackColor = true;
             // 
             // tabControl1
             // 
-            this.tabControl1.Controls.Add(this.tabPage1);
-            this.tabControl1.Controls.Add(this.tabPage2);
-            this.tabControl1.Controls.Add(this.tabPage3);
+            this.tabControl1.Controls.Add(this.WhMessungTab);
+            this.tabControl1.Controls.Add(this.Einstellungen);
+            this.tabControl1.Controls.Add(this.Status);
             this.tabControl1.Location = new System.Drawing.Point(30, 151);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.Size = new System.Drawing.Size(1159, 931);
             this.tabControl1.TabIndex = 30;
             // 
-            // tabPage1
+            // WhMessungTab
             // 
-            this.tabPage1.Controls.Add(this.label12);
-            this.tabPage1.Controls.Add(this.VinStart);
-            this.tabPage1.Controls.Add(this.TextBoxWhMessungVinEnde);
-            this.tabPage1.Controls.Add(this.TextBoxWhMessungVinStart);
-            this.tabPage1.Controls.Add(this.label11);
-            this.tabPage1.Controls.Add(this.label10);
-            this.tabPage1.Controls.Add(this.label9);
-            this.tabPage1.Controls.Add(this.Startzeit);
-            this.tabPage1.Controls.Add(this.TextBoxWhMessungZeitEnde);
-            this.tabPage1.Controls.Add(this.TextBoxWhMessungZeitStart);
-            this.tabPage1.Controls.Add(this.TextBoxWhMessung);
-            this.tabPage1.Controls.Add(this.TextBoxWhMessungAnzahl);
-            this.tabPage1.Controls.Add(this.ButtonWHMessungStop);
-            this.tabPage1.Controls.Add(this.ButtonWHMessungStart);
-            this.tabPage1.Location = new System.Drawing.Point(4, 29);
-            this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(1151, 898);
-            this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "Wh Messung";
-            this.tabPage1.UseVisualStyleBackColor = true;
+            this.WhMessungTab.Controls.Add(this.label12);
+            this.WhMessungTab.Controls.Add(this.VinStart);
+            this.WhMessungTab.Controls.Add(this.TextBoxWhMessungVinEnde);
+            this.WhMessungTab.Controls.Add(this.TextBoxWhMessungVinStart);
+            this.WhMessungTab.Controls.Add(this.label11);
+            this.WhMessungTab.Controls.Add(this.label10);
+            this.WhMessungTab.Controls.Add(this.label9);
+            this.WhMessungTab.Controls.Add(this.Startzeit);
+            this.WhMessungTab.Controls.Add(this.TextBoxWhMessungZeitEnde);
+            this.WhMessungTab.Controls.Add(this.TextBoxWhMessungZeitStart);
+            this.WhMessungTab.Controls.Add(this.TextBoxWhMessung);
+            this.WhMessungTab.Controls.Add(this.TextBoxWhMessungAnzahl);
+            this.WhMessungTab.Controls.Add(this.ButtonWHMessungStop);
+            this.WhMessungTab.Controls.Add(this.ButtonWHMessungStart);
+            this.WhMessungTab.Location = new System.Drawing.Point(4, 29);
+            this.WhMessungTab.Name = "WhMessungTab";
+            this.WhMessungTab.Padding = new System.Windows.Forms.Padding(3);
+            this.WhMessungTab.Size = new System.Drawing.Size(1151, 898);
+            this.WhMessungTab.TabIndex = 0;
+            this.WhMessungTab.Text = "Wh Messung";
+            this.WhMessungTab.UseVisualStyleBackColor = true;
             // 
             // label12
             // 
@@ -309,7 +297,7 @@
             // 
             // ButtonWHMessungStop
             // 
-            this.ButtonWHMessungStop.Location = new System.Drawing.Point(156, 70);
+            this.ButtonWHMessungStop.Location = new System.Drawing.Point(230, 70);
             this.ButtonWHMessungStop.Name = "ButtonWHMessungStop";
             this.ButtonWHMessungStop.Size = new System.Drawing.Size(90, 37);
             this.ButtonWHMessungStop.TabIndex = 1;
@@ -327,33 +315,43 @@
             this.ButtonWHMessungStart.UseVisualStyleBackColor = true;
             this.ButtonWHMessungStart.Click += new System.EventHandler(this.ButtonWHMessungStart_Click);
             // 
-            // tabPage2
+            // Einstellungen
             // 
-            this.tabPage2.Controls.Add(this.label8);
-            this.tabPage2.Controls.Add(this.label7);
-            this.tabPage2.Controls.Add(this.label6);
-            this.tabPage2.Controls.Add(this.label5);
-            this.tabPage2.Controls.Add(this.label4);
-            this.tabPage2.Controls.Add(this.label3);
-            this.tabPage2.Controls.Add(this.label2);
-            this.tabPage2.Controls.Add(this.comboBoxAuswahl);
-            this.tabPage2.Controls.Add(this.TextBoxmaxALast);
-            this.tabPage2.Controls.Add(this.TextBoxvinRef);
-            this.tabPage2.Controls.Add(this.TextBoxvmin);
-            this.tabPage2.Controls.Add(this.TextBoxvmax);
-            this.tabPage2.Controls.Add(this.TextBoxrLast);
-            this.tabPage2.Controls.Add(this.TextBoxaref);
-            this.tabPage2.Controls.Add(this.TextBoxmvinRef);
-            this.tabPage2.Controls.Add(this.ButtonLaden);
-            this.tabPage2.Controls.Add(this.ButtonSpeichern);
-            this.tabPage2.Location = new System.Drawing.Point(4, 29);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(1151, 898);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "Einstellungen";
-            this.tabPage2.UseVisualStyleBackColor = true;
-            this.tabPage2.Enter += new System.EventHandler(this.tabPage2_Enter);
+            this.Einstellungen.Controls.Add(this.CheckBoxMosfet);
+            this.Einstellungen.Controls.Add(this.label8);
+            this.Einstellungen.Controls.Add(this.label7);
+            this.Einstellungen.Controls.Add(this.label6);
+            this.Einstellungen.Controls.Add(this.label5);
+            this.Einstellungen.Controls.Add(this.label4);
+            this.Einstellungen.Controls.Add(this.label3);
+            this.Einstellungen.Controls.Add(this.label2);
+            this.Einstellungen.Controls.Add(this.TextBoxmaxALast);
+            this.Einstellungen.Controls.Add(this.TextBoxvinRef);
+            this.Einstellungen.Controls.Add(this.TextBoxvmin);
+            this.Einstellungen.Controls.Add(this.TextBoxvmax);
+            this.Einstellungen.Controls.Add(this.TextBoxrLast);
+            this.Einstellungen.Controls.Add(this.TextBoxaref);
+            this.Einstellungen.Controls.Add(this.TextBoxmvinRef);
+            this.Einstellungen.Controls.Add(this.ButtonLaden);
+            this.Einstellungen.Controls.Add(this.ButtonSpeichern);
+            this.Einstellungen.Location = new System.Drawing.Point(4, 29);
+            this.Einstellungen.Name = "Einstellungen";
+            this.Einstellungen.Padding = new System.Windows.Forms.Padding(3);
+            this.Einstellungen.Size = new System.Drawing.Size(1151, 898);
+            this.Einstellungen.TabIndex = 1;
+            this.Einstellungen.Text = "Einstellungen";
+            this.Einstellungen.UseVisualStyleBackColor = true;
+            // 
+            // CheckBoxMosfet
+            // 
+            this.CheckBoxMosfet.AutoSize = true;
+            this.CheckBoxMosfet.Location = new System.Drawing.Point(505, 99);
+            this.CheckBoxMosfet.Name = "CheckBoxMosfet";
+            this.CheckBoxMosfet.Size = new System.Drawing.Size(84, 24);
+            this.CheckBoxMosfet.TabIndex = 41;
+            this.CheckBoxMosfet.Text = "Mosfet";
+            this.CheckBoxMosfet.UseVisualStyleBackColor = true;
+            this.CheckBoxMosfet.CheckedChanged += new System.EventHandler(this.CheckBoxMosfet_CheckedChanged);
             // 
             // label8
             // 
@@ -418,14 +416,6 @@
             this.label2.TabIndex = 34;
             this.label2.Text = "Mosfet Spannungsanpassung Widerstände";
             // 
-            // comboBoxAuswahl
-            // 
-            this.comboBoxAuswahl.FormattingEnabled = true;
-            this.comboBoxAuswahl.Location = new System.Drawing.Point(173, 51);
-            this.comboBoxAuswahl.Name = "comboBoxAuswahl";
-            this.comboBoxAuswahl.Size = new System.Drawing.Size(145, 28);
-            this.comboBoxAuswahl.TabIndex = 33;
-            // 
             // TextBoxmaxALast
             // 
             this.TextBoxmaxALast.Location = new System.Drawing.Point(374, 192);
@@ -475,15 +465,47 @@
             this.TextBoxmvinRef.Size = new System.Drawing.Size(100, 26);
             this.TextBoxmvinRef.TabIndex = 26;
             // 
-            // tabPage3
+            // Status
             // 
-            this.tabPage3.Location = new System.Drawing.Point(4, 29);
-            this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(1151, 898);
-            this.tabPage3.TabIndex = 2;
-            this.tabPage3.Text = "Status";
-            this.tabPage3.UseVisualStyleBackColor = true;
+            this.Status.Controls.Add(this.ChartAkkuzellen);
+            this.Status.Location = new System.Drawing.Point(4, 29);
+            this.Status.Name = "Status";
+            this.Status.Padding = new System.Windows.Forms.Padding(3);
+            this.Status.Size = new System.Drawing.Size(1151, 898);
+            this.Status.TabIndex = 2;
+            this.Status.Text = "Status";
+            this.Status.UseVisualStyleBackColor = true;
+            this.Status.Enter += new System.EventHandler(this.tabPage3_Enter);
+            this.Status.Leave += new System.EventHandler(this.tabPage3_Leave);
+            // 
+            // ChartAkkuzellen
+            // 
+            chartArea1.Name = "ChartArea1";
+            this.ChartAkkuzellen.ChartAreas.Add(chartArea1);
+            legend1.Name = "Legend1";
+            this.ChartAkkuzellen.Legends.Add(legend1);
+            this.ChartAkkuzellen.Location = new System.Drawing.Point(-4, 0);
+            this.ChartAkkuzellen.Name = "ChartAkkuzellen";
+            series1.ChartArea = "ChartArea1";
+            series1.IsVisibleInLegend = false;
+            series1.IsXValueIndexed = true;
+            series1.Legend = "Legend1";
+            series1.Name = "Akkuzellen";
+            series1.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Int32;
+            series1.YValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Double;
+            this.ChartAkkuzellen.Series.Add(series1);
+            this.ChartAkkuzellen.Size = new System.Drawing.Size(1159, 889);
+            this.ChartAkkuzellen.TabIndex = 2;
+            this.ChartAkkuzellen.Text = "chart1";
+            // 
+            // comboBoxAuswahl
+            // 
+            this.comboBoxAuswahl.FormattingEnabled = true;
+            this.comboBoxAuswahl.Location = new System.Drawing.Point(34, 100);
+            this.comboBoxAuswahl.Name = "comboBoxAuswahl";
+            this.comboBoxAuswahl.Size = new System.Drawing.Size(145, 28);
+            this.comboBoxAuswahl.TabIndex = 33;
+            this.comboBoxAuswahl.SelectedIndexChanged += new System.EventHandler(this.comboBoxAuswahl_SelectedIndexChanged);
             // 
             // Sync
             // 
@@ -496,28 +518,61 @@
             this.Sync.UseVisualStyleBackColor = true;
             this.Sync.Click += new System.EventHandler(this.Sync_Click);
             // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(1195, 151);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(36, 20);
+            this.label13.TabIndex = 32;
+            this.label13.Text = "Log";
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(40, 70);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(109, 20);
+            this.label14.TabIndex = 34;
+            this.label14.Text = "Akku Auswahl";
+            // 
+            // checkBoxAutoMode
+            // 
+            this.checkBoxAutoMode.AutoSize = true;
+            this.checkBoxAutoMode.Location = new System.Drawing.Point(684, 21);
+            this.checkBoxAutoMode.Name = "checkBoxAutoMode";
+            this.checkBoxAutoMode.Size = new System.Drawing.Size(109, 24);
+            this.checkBoxAutoMode.TabIndex = 35;
+            this.checkBoxAutoMode.Text = "AutoMode";
+            this.checkBoxAutoMode.UseVisualStyleBackColor = true;
+            this.checkBoxAutoMode.CheckedChanged += new System.EventHandler(this.checkBoxAutoMode_CheckedChanged);
+            // 
             // BMSKommunikation
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(2115, 1156);
+            this.ClientSize = new System.Drawing.Size(1924, 1050);
+            this.Controls.Add(this.checkBoxAutoMode);
+            this.Controls.Add(this.label14);
+            this.Controls.Add(this.label13);
             this.Controls.Add(this.Sync);
             this.Controls.Add(this.tabControl1);
-            this.Controls.Add(this.checkBoxMosfet2);
-            this.Controls.Add(this.checkBoxMosfet1);
             this.Controls.Add(this.TextBoxLog);
             this.Controls.Add(this.ButtonAutoConnect);
             this.Controls.Add(this.ButtonTrennen);
             this.Controls.Add(this.ButtonVerbinden);
             this.Controls.Add(this.label1);
+            this.Controls.Add(this.comboBoxAuswahl);
             this.Controls.Add(this.TextBoxPortArduino);
             this.Name = "BMSKommunikation";
             this.Text = "BMSKommunikation";
             this.tabControl1.ResumeLayout(false);
-            this.tabPage1.ResumeLayout(false);
-            this.tabPage1.PerformLayout();
-            this.tabPage2.ResumeLayout(false);
-            this.tabPage2.PerformLayout();
+            this.WhMessungTab.ResumeLayout(false);
+            this.WhMessungTab.PerformLayout();
+            this.Einstellungen.ResumeLayout(false);
+            this.Einstellungen.PerformLayout();
+            this.Status.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.ChartAkkuzellen)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -533,11 +588,9 @@
         private System.Windows.Forms.Button ButtonSpeichern;
         private System.Windows.Forms.Button ButtonAutoConnect;
         private System.Windows.Forms.TextBox TextBoxLog;
-        private System.Windows.Forms.CheckBox checkBoxMosfet1;
-        private System.Windows.Forms.CheckBox checkBoxMosfet2;
         private System.Windows.Forms.TabControl tabControl1;
-        private System.Windows.Forms.TabPage tabPage1;
-        private System.Windows.Forms.TabPage tabPage2;
+        private System.Windows.Forms.TabPage WhMessungTab;
+        private System.Windows.Forms.TabPage Einstellungen;
         private System.Windows.Forms.ComboBox comboBoxAuswahl;
         private System.Windows.Forms.TextBox TextBoxmaxALast;
         private System.Windows.Forms.TextBox TextBoxvinRef;
@@ -546,7 +599,7 @@
         private System.Windows.Forms.TextBox TextBoxrLast;
         private System.Windows.Forms.TextBox TextBoxaref;
         private System.Windows.Forms.TextBox TextBoxmvinRef;
-        private System.Windows.Forms.TabPage tabPage3;
+        private System.Windows.Forms.TabPage Status;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label5;
@@ -569,6 +622,11 @@
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Label VinStart;
         private System.Windows.Forms.Button Sync;
+        private System.Windows.Forms.DataVisualization.Charting.Chart ChartAkkuzellen;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.CheckBox CheckBoxMosfet;
+        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.CheckBox checkBoxAutoMode;
     }
 }
 

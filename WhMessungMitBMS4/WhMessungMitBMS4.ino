@@ -15,7 +15,7 @@ bool gruen = false;
 #define MosfetPin 9
 
 float vinRef = 5.873; // Wird verwendet um die Abweichung der Widerstände am Vin anzupassen
-char Name[3] = "02";//Name vom Gerät
+char Name[3] = "01";//Name vom Gerät
 
 String cmdString; // Wird verwendet um die ankommenden Daten zu verarbeiten
 String datenString; // Enthält die ankommenden unveränderten Daten die über Uart eintreffen
@@ -104,16 +104,16 @@ void loop() {
     digitalWrite(gelbLED, LOW);
   }
   if (getalast() > maxALast) {// zu hoher Strom am Mosfet
-    Serial.print(String(Name) + ",Fehler:Alast:" + String(getalast(), 3) + ":Fehler:X");
+    Serial.print(String(Name) + ",1:Alast:" + String(getalast(), 3) + ":X");
     Serial.flush();
   }
   if (getVin() > vmax) {// Zu hohe Spannung am Akku. Der Mosfet wird eingeschaltet
-    Serial.print(String(Name) + ",Fehler:vmax:" + String(getVin(), 3) + ":Fehler:X");
+    Serial.print(String(Name) + ",1:vmax:" + String(getVin(), 3) + ":X");
     Serial.flush();
     setMosfetOn();
   }
   if (getVin() < vmin) {// Die Spannung ist am Akku zu niedrig. Schaltet den Mosfet aus
-    Serial.print(String(Name) + ",Fehler:vmin:" + String(getVin(), 3) + ":Fehler:X");
+    Serial.print(String(Name) + ",1:vmin:" + String(getVin(), 3) + ":X");
     Serial.flush();
     setMosfetOff();
   }
@@ -138,29 +138,29 @@ void serialEvent() {
       par1 = cmdString.substring(0, int_tmp); // Speichern der zusäzlichen Parameter
       par2 = cmdString.substring(int_tmp + 1);
       if (par1 == "on") {
-        Serial.print(String(Name) + ",on:X");
+        Serial.print(String(Name) + ",2:on:X");
         Serial.flush();
         setMosfetOn();
         geantworet = true;
       }
       if (par1 == "off") {
-        Serial.print(String(Name) + ",off:X");
+        Serial.print(String(Name) + ",2:off:X");
         Serial.flush();
         setMosfetOff();
         geantworet = true;
       }
       if (par1 == "WhMessung") {
-        Serial.print(String(Name) + "," + String(getalast(), 3) + ":" + String(getVin(), 3) + ":" + String(GetMillis()) + ":X");
+        Serial.print(String(Name) + ",3:" + String(getalast(), 3) + ":" + String(getVin(), 3) + ":" + String(GetMillis()) + ":X");
         Serial.flush();
         geantworet = true;
       }
       if (par1 == "status") {
-        Serial.print(String(Name) + "," + analogRead(tmp1) + ":" + analogRead(tmp2) + ":" + analogRead(tmp3) + ":" + analogRead(tmp4) + ":" + String(getalast(), 3) + ":" + String(getVin(), 3) + ":" + String(GetMillis()) + ":X");
+        Serial.print(String(Name) + ",4:" + analogRead(tmp1) + ":" + analogRead(tmp2) + ":" + analogRead(tmp3) + ":" + analogRead(tmp4) + ":" + String(getalast(), 3) + ":" + String(getVin(), 3) + ":" + String(GetMillis()) + ":X");
         Serial.flush();
         geantworet = true;
       }
       if (par1 == "para") {//gibt alle Parameter aus
-        Serial.print(String(Name) + "," + String(mvinRef, 3) + ":" + String(aref, 3) + ":" + String(rLast, 3) + ":" + String(maxALast, 3) + ":" + String(vinRef, 3) + ":" + String(vmin, 3) + ":" + String(vmax, 3) + ":X");
+        Serial.print(String(Name) + ",5:" + String(mvinRef, 3) + ":" + String(aref, 3) + ":" + String(rLast, 3) + ":" + String(maxALast, 3) + ":" + String(vinRef, 3) + ":" + String(vmin, 3) + ":" + String(vmax, 3) + ":X");
         Serial.flush();
         geantworet = true;
       }
@@ -204,7 +204,6 @@ void serialEvent() {
         Serial.flush();
         geantworet = true;
       }
-
       par1 = "";
     }
   }
