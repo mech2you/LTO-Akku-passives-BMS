@@ -20,16 +20,21 @@ namespace BMS_Kommunikation_v1._0
         private BackgroundWorker WHMessungWorker;
         private BackgroundWorker StatusWorker;
         private BackgroundWorker AutoModeWorker;
+        private BackgroundWorker AliveWorker;
+        bool BWStopAliveWorker;//übertragung an BW Worker ob Alive an oder aus ist
+
         String AuswahlBMS = "";
+
         public BMSKommunikation()
         {
 
             InitializeComponent();
             BWStop = false;
-
+            BWStopAliveWorker = false;
             BWeinmal = true;
 
             Arduino = new ArduinoConnectSerial(ButtonVerbinden, ButtonTrennen, ButtonAutoConnect, TextBoxPortArduino, TextBoxLog);
+            Arduino.ThresholdReached += EventHandlerConnect;
             comboBoxAuswahl.Items.Add("01");
             comboBoxAuswahl.Items.Add("02");
             deltT = 0;
@@ -53,30 +58,60 @@ namespace BMS_Kommunikation_v1._0
             AutoModeWorker.DoWork += new DoWorkEventHandler(EventHandlerAutoModeWorker);
             AutoModeWorker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(EventHandlerAutoModeWorkerFetig);
 
+            AliveWorker = new BackgroundWorker();
+            AliveWorker.WorkerReportsProgress = true;
+            AliveWorker.WorkerSupportsCancellation = true;
+            AliveWorker.DoWork += new DoWorkEventHandler(EventHandlerAliveWorker);
+            AliveWorker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(EventHandlerAliveWorkerFertig);
+
 
         }
+        void EventHandlerConnect(object sender, ThresholdReachedEventArgs e)
+        {
+            if (e.Verbunden)
+            {
+                for (int i = 1; i <= Arduino.Datensatz168p.Count(); i++)
+                {
+                    Thread.Sleep(300);
+                    Arduino.Send_Komando(PassivBMS.Parameter(i));
+                }
+                Thread.Sleep(200);
+            }
+        }
+        public void EventHandlerAliveWorkerFertig(object sender, RunWorkerCompletedEventArgs e)
+        {
+            if (e.Error != null)
+            {
+                // Fehler
+            }
+            if (BWStopAliveWorker)//Bricht den Background Worker ab wenn keine Messungen meher an sind
+            {
+                AliveWorker.RunWorkerAsync();
+            }
+        }
+        public void EventHandlerAliveWorker(object sender, DoWorkEventArgs e)
+        {
+            for (int i = 1; i <= Arduino.Datensatz168p.Count(); i++)
+            {
+                Arduino.Send_Komando(PassivBMS.BMStoString(i) + ",alive,:X");
+                System.Threading.Thread.Sleep(2000);
+            }
+        }
+
+
         public void EventHandlerAutoModeWorkerFetig(object sender, RunWorkerCompletedEventArgs e)
         {
-            string itmp = "";
             if (e.Error != null)
             {
                 // Fehler
             }
             for (int i = 0; i < Arduino.Datensatz168p.Count(); i++)
             {
-                if (i < 9)
-                {
-                    itmp = "0" + Convert.ToString(i + 1);
-                }
-                else
-                {
-                    itmp = Convert.ToString(i + 1);
-                }
                 if (Arduino.Datensatz168p[i].mFet)// Deaktiviert alle Mosfets damit diese nicht an bleiben
                 {
                     Arduino.Datensatz168p[i].mFet = false;
-                    Arduino.Send_Komando(itmp + ",off,:X");
-                    System.Threading.Thread.Sleep(100);
+                    Arduino.Send_Komando(PassivBMS.Mosfet(i+1,false));
+                    System.Threading.Thread.Sleep(50);
                 }
             }
         }
@@ -86,8 +121,7 @@ namespace BMS_Kommunikation_v1._0
             int k = 0;
             double summe = 0;
             double ergebnis = 0;
-            double abweichung = 0.005;
-            string itmp = "";
+            double abweichung = 0.01;
             while (!worker.CancellationPending)
             {
                 summe = 0;
@@ -103,20 +137,12 @@ namespace BMS_Kommunikation_v1._0
 
                 for (int i = 0; i < Arduino.Datensatz168p.Count(); i++)
                 {
-                    if (i < 9)
-                    {
-                        itmp = "0" + Convert.ToString(i + 1);
-                    }
-                    else
-                    {
-                        itmp = Convert.ToString(i + 1);
-                    }
                     if (Arduino.Datensatz168p[i].vin - ergebnis> abweichung)
                     {
                         if (!Arduino.Datensatz168p[i].mFet)
                         {
                             Arduino.Datensatz168p[i].mFet = true;
-                            Arduino.Send_Komando(itmp + ",on,:X");
+                            Arduino.Send_Komando(PassivBMS.Mosfet(i + 1, true));
                             System.Threading.Thread.Sleep(100);
                         }
                        
@@ -126,7 +152,7 @@ namespace BMS_Kommunikation_v1._0
                         if (Arduino.Datensatz168p[i].mFet)
                         {
                             Arduino.Datensatz168p[i].mFet = false;
-                            Arduino.Send_Komando(itmp + ",off,:X");
+                            Arduino.Send_Komando(PassivBMS.Mosfet(i + 1, false));
                             System.Threading.Thread.Sleep(100);
                         }
                         
@@ -141,7 +167,6 @@ namespace BMS_Kommunikation_v1._0
                 // Fehler
             }
             int abbrechen = 0;
-            string itmp = "";
 
             TextBoxWhMessungAnzahl.Text = Convert.ToString(Arduino.Datensatz168p[Convert.ToInt32(AuswahlBMS) - 1].WhMessung.Count());
             TextBoxWhMessung.Text = Convert.ToString(Arduino.Datensatz168p[Convert.ToInt32(AuswahlBMS) - 1].WhMessungErgebnis);
@@ -154,14 +179,6 @@ namespace BMS_Kommunikation_v1._0
             TextBoxWhMessungVinStart.Text= Convert.ToString(Arduino.Datensatz168p[Convert.ToInt32(AuswahlBMS) - 1].WhMessungMessungVinStart);
             for (int i = 0; i < Arduino.Datensatz168p.Count(); i++)
             {
-                if (i < 9)
-                {
-                    itmp = "0" + Convert.ToString(i + 1);
-                }
-                else
-                {
-                    itmp = Convert.ToString(i + 1);
-                }
                 if (Arduino.Datensatz168p[Convert.ToInt32(i)].WhMessungAn)
                 {
                     abbrechen++;
@@ -170,8 +187,7 @@ namespace BMS_Kommunikation_v1._0
                 {
                     if (Arduino.Datensatz168p[Convert.ToInt32(i)].mFet)
                     {
-                        Arduino.Send_Komando(itmp + ",off,:X");
-
+                        Arduino.Send_Komando(PassivBMS.Mosfet(i + 1, false));
                         Arduino.Datensatz168p[i].mFet = false;
                     }
                 }
@@ -183,23 +199,11 @@ namespace BMS_Kommunikation_v1._0
         }
         public void EventHandlerWHMessungWorker(object sender, DoWorkEventArgs e)
         {
-            string itmp = "";
             for (int i = 0; i < Arduino.Datensatz168p.Count(); i++)
             {
-
-                if (i < 9)
-                {
-                    itmp = "0" + Convert.ToString(i+1);
-                }
-                else
-                {
-                    itmp= Convert.ToString(i + 1);
-                }
-
-                    
                 if (Arduino.Datensatz168p[i].WhMessungAn)//Messung für den Datensatz ist nicht an
                 {
-                    Arduino.Send_Komando(itmp + ",WhMessung,:X");
+                    Arduino.Send_Komando(PassivBMS.WhMessung(i + 1));
                     System.Threading.Thread.Sleep(1000);
                     if (Arduino.Datensatz168p[i].WHMessungAnzahl > 2)// Erst ab den dritten Dattensatz beginng die Messung
                     {
@@ -225,14 +229,14 @@ namespace BMS_Kommunikation_v1._0
                 {
                     if(Arduino.Datensatz168p[i].mFet)
                     {
-                        Arduino.Send_Komando(itmp + ",off,:X");
+                        Arduino.Send_Komando(PassivBMS.Mosfet(i + 1, false));
                         Arduino.Datensatz168p[i].mFet = false;
                     }
                 }
                 if (Arduino.Datensatz168p[i].fehler)//Bricht die Messung ab da ein Fehler aufgetreten ist
                 {
                     Thread.Sleep(1000);
-                    Arduino.Send_Komando(itmp+",off,:X");
+                    Arduino.Send_Komando(PassivBMS.Mosfet(i + 1, false));
                     Arduino.Datensatz168p[i].mFet = false;
                     break;
                 }
@@ -276,66 +280,59 @@ namespace BMS_Kommunikation_v1._0
 
             for (int i = 1; i <= j; i++)
             {
-                if (i < 10)//wenn i kleiner als 10 ist muss eine voranstehende 0 angefügt werden
-                {
-                    Arduino.Send_Komando("0" + Convert.ToString(i) + ",status,:X");
-                }
-                else
-                {
-                    Arduino.Send_Komando(Convert.ToString(i) + ",status,:X");
-                }
-                Thread.Sleep(100);
+                Arduino.Send_Komando(PassivBMS.Status(i));
+                Thread.Sleep(200);
             }
         }
         private void ButtonLaden_Click(object sender, EventArgs e)
         {
-            Thread.Sleep(300);
-            Arduino.Send_Komando("01,para,:X");
-            Thread.Sleep(300);
-            Arduino.Send_Komando("02,para,:X");
+            int j = Arduino.Datensatz168p.Count;// Anzahl von Geräten
+            for (int i = 1; i <= j; i++)
+            {
+                Arduino.Send_Komando(PassivBMS.Parameter(i));
+                Thread.Sleep(500);
+            }
         }
 
         private void ButtonSpeichern_Click(object sender, EventArgs e)//Nur die Änderungen werden übertragen an den jeweiligen Kontroller
         {
-            String tmp = "";
-
-            tmp += comboBoxAuswahl.Text + ",";
             if (TextBoxmvinRef.Text != Convert.ToString(Arduino.Datensatz168p[Convert.ToInt32(comboBoxAuswahl.Text) - 1].mvinRef))
             {
-                Arduino.Send_Komando(tmp+"mvinRef,"+ TextBoxmvinRef.Text.Replace(",", ".") + ":X");
+                Arduino.Send_Komando(PassivBMS.mvinRef(comboBoxAuswahl.Text, TextBoxmvinRef.Text));
                 Thread.Sleep(300);
             }
             if (TextBoxaref.Text != Convert.ToString(Arduino.Datensatz168p[Convert.ToInt32(comboBoxAuswahl.Text) - 1].aref))
             {
-                Arduino.Send_Komando(tmp + "aRef," + TextBoxaref.Text.Replace(",",".") + ":X");
+                Arduino.Send_Komando(PassivBMS.aRef(comboBoxAuswahl.Text, TextBoxaref.Text));
                 Thread.Sleep(300);
             }
             if (TextBoxrLast.Text != Convert.ToString(Arduino.Datensatz168p[Convert.ToInt32(comboBoxAuswahl.Text) - 1].rLast))
             {
-                Arduino.Send_Komando(tmp + "rLast," + TextBoxrLast.Text.Replace(",", ".") + ":X");
+                Arduino.Send_Komando(PassivBMS.rLast(comboBoxAuswahl.Text, TextBoxrLast.Text));
                 Thread.Sleep(300);
             }
             if (TextBoxmaxALast.Text != Convert.ToString(Arduino.Datensatz168p[Convert.ToInt32(comboBoxAuswahl.Text) - 1].maxALast))
             {
-                Arduino.Send_Komando(tmp + "maxALast," + TextBoxmaxALast.Text.Replace(",", ".") + ":X");
+                Arduino.Send_Komando(PassivBMS.maxALast(comboBoxAuswahl.Text, TextBoxmaxALast.Text));
                 Thread.Sleep(300);
             }
             if (TextBoxvinRef.Text != Convert.ToString(Arduino.Datensatz168p[Convert.ToInt32(comboBoxAuswahl.Text) - 1].vinRef))
             {
-                Arduino.Send_Komando(tmp + "vinRef," + TextBoxvinRef.Text.Replace(",", ".") + ":X");
+                Arduino.Send_Komando(PassivBMS.vinRef(comboBoxAuswahl.Text, TextBoxvinRef.Text));
                 Thread.Sleep(300);
             }
             if (TextBoxvmin.Text != Convert.ToString(Arduino.Datensatz168p[Convert.ToInt32(comboBoxAuswahl.Text) - 1].vmin))
             {
-                Arduino.Send_Komando(tmp + "vmin," + TextBoxvmin.Text.Replace(",", ".") + ":X");
+                Arduino.Send_Komando(PassivBMS.vmin(comboBoxAuswahl.Text, TextBoxvmin.Text));
                 Thread.Sleep(300);
             }
             if (TextBoxvmax.Text != Convert.ToString(Arduino.Datensatz168p[Convert.ToInt32(comboBoxAuswahl.Text) - 1].vmax))
             {
-                Arduino.Send_Komando(tmp + "vmax," + TextBoxvmax.Text.Replace(",", ".") + ":X");
+                Arduino.Send_Komando(PassivBMS.vmax(comboBoxAuswahl.Text, TextBoxvmax.Text));
                 Thread.Sleep(300);
             }
-            Arduino.Send_Komando(tmp+"para,:X");
+            
+            Arduino.Send_Komando(PassivBMS.Parameter(comboBoxAuswahl.Text.Replace(",", ".")));
             Thread.Sleep(300);//Läde die Daten neu
             TextBoxmvinRef.Text = Convert.ToString(Arduino.Datensatz168p[Convert.ToInt32(comboBoxAuswahl.Text) - 1].mvinRef);
             TextBoxaref.Text = Convert.ToString(Arduino.Datensatz168p[Convert.ToInt32(comboBoxAuswahl.Text) - 1].aref);
@@ -352,9 +349,9 @@ namespace BMS_Kommunikation_v1._0
             utcDate = DateTime.UtcNow;
             utcDate = utcDate.AddHours(2.0);
             Arduino.Datensatz168p[Convert.ToInt32( AuswahlBMS)-1].mFet = true;
-            Arduino.Send_Komando(AuswahlBMS+",on,:X");
+            Arduino.Send_Komando(PassivBMS.Mosfet(AuswahlBMS, true));
             Arduino.Datensatz168p[Convert.ToInt32(AuswahlBMS) - 1].WhMessungAn = true;
-            Arduino.Send_Komando(AuswahlBMS + ",WhMessung,:X");
+            Arduino.Send_Komando(PassivBMS.WhMessung(AuswahlBMS));
             Thread.Sleep(300);
             Arduino.Datensatz168p[Convert.ToInt32(AuswahlBMS) - 1].WhMessungStartzeit = utcDate;
             TextBoxWhMessungZeitStart.Text = Arduino.Datensatz168p[Convert.ToInt32(AuswahlBMS) - 1].WhMessungStartzeit.ToString(System.Globalization.CultureInfo.CreateSpecificCulture("de-DE"));
@@ -379,11 +376,13 @@ namespace BMS_Kommunikation_v1._0
 
         private void Sync_Click(object sender, EventArgs e)
         {
-            Arduino.Send_Komando("01,Sync,:X");
-            Thread.Sleep(1800);
-            Arduino.Send_Komando("02,Sync,:X");
+            int j = Arduino.Datensatz168p.Count;// Anzahl von Geräten
+            for (int i = 1; i <= j; i++)
+            {
+                Arduino.Send_Komando(PassivBMS.Sync(i));
+                Thread.Sleep(300);
+            }
         }
-
         private void comboBoxAuswahl_SelectedIndexChanged(object sender, EventArgs e)
         {
             ComboBox CB =  (ComboBox)sender;
@@ -410,10 +409,10 @@ namespace BMS_Kommunikation_v1._0
             BWStop = true;
             if (BWeinmal)
             {
-                for (int i = 0; i < Arduino.Datensatz168p.Count(); i++)
+                for (int i = 1; i <= Arduino.Datensatz168p.Count(); i++)
                 {
                     Thread.Sleep(300);
-                    Arduino.Send_Komando(PassivBMS.BMStoString(i)+",para,:X");
+                    Arduino.Send_Komando(PassivBMS.Parameter(i));
                 }
                 Thread.Sleep(200);
                 BWeinmal = false;
@@ -440,16 +439,14 @@ namespace BMS_Kommunikation_v1._0
 
         private void CheckBoxMosfet_CheckedChanged(object sender, EventArgs e)
         {
-            String tmp = "";
-            tmp += comboBoxAuswahl.Text + ",";
             CheckBox isONorOFF=  (CheckBox)sender;
             if (isONorOFF.Checked)
             {
-                Arduino.Send_Komando(tmp + "on,:X");
+                Arduino.Send_Komando(PassivBMS.Mosfet(comboBoxAuswahl.Text,true));
             }
             else
             {
-                Arduino.Send_Komando(tmp + "off,:X");
+                Arduino.Send_Komando(PassivBMS.Mosfet(comboBoxAuswahl.Text, false));
             }
         }
 
@@ -464,10 +461,10 @@ namespace BMS_Kommunikation_v1._0
                 {
                     Arduino.Datensatz168p[i].WhMessungAn = false;
                 }
-                for (int i = 0; i < Arduino.Datensatz168p.Count(); i++)
+                for (int i = 1; i <= Arduino.Datensatz168p.Count(); i++)
                 {
                     Thread.Sleep(300);
-                    Arduino.Send_Komando(PassivBMS.BMStoString(i) + ",para,:X");
+                    Arduino.Send_Komando(PassivBMS.Parameter(i));
                 }
                 Thread.Sleep(200);
                 BWStop = true;
@@ -484,6 +481,28 @@ namespace BMS_Kommunikation_v1._0
                 ButtonWHMessungStart.Enabled = true;
                 ButtonWHMessungStop.Enabled = true;
                 AutoModeWorker.CancelAsync();
+            }
+        }
+
+        private void CheckBoxAlive_CheckedChanged(object sender, EventArgs e)
+        {
+            CheckBox CB = (CheckBox)sender;
+            if (CB.Checked)
+            {
+                BWStopAliveWorker = true;
+                if (!AliveWorker.IsBusy)
+                {
+
+                    AliveWorker.RunWorkerAsync();
+                }
+                else
+                {
+                    CB.Checked = false;
+                }
+            }
+            else
+            {
+                BWStopAliveWorker = false;
             }
         }
     }

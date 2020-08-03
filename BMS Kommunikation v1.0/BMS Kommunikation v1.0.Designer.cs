@@ -78,6 +78,7 @@
             this.label13 = new System.Windows.Forms.Label();
             this.label14 = new System.Windows.Forms.Label();
             this.checkBoxAutoMode = new System.Windows.Forms.CheckBox();
+            this.CheckBoxAlive = new System.Windows.Forms.CheckBox();
             this.tabControl1.SuspendLayout();
             this.WhMessungTab.SuspendLayout();
             this.Einstellungen.SuspendLayout();
@@ -547,11 +548,23 @@
             this.checkBoxAutoMode.UseVisualStyleBackColor = true;
             this.checkBoxAutoMode.CheckedChanged += new System.EventHandler(this.checkBoxAutoMode_CheckedChanged);
             // 
+            // CheckBoxAlive
+            // 
+            this.CheckBoxAlive.AutoSize = true;
+            this.CheckBoxAlive.Location = new System.Drawing.Point(799, 21);
+            this.CheckBoxAlive.Name = "CheckBoxAlive";
+            this.CheckBoxAlive.Size = new System.Drawing.Size(68, 24);
+            this.CheckBoxAlive.TabIndex = 36;
+            this.CheckBoxAlive.Text = "Alive";
+            this.CheckBoxAlive.UseVisualStyleBackColor = true;
+            this.CheckBoxAlive.CheckedChanged += new System.EventHandler(this.CheckBoxAlive_CheckedChanged);
+            // 
             // BMSKommunikation
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1924, 1050);
+            this.Controls.Add(this.CheckBoxAlive);
             this.Controls.Add(this.checkBoxAutoMode);
             this.Controls.Add(this.label14);
             this.Controls.Add(this.label13);
@@ -627,6 +640,7 @@
         private System.Windows.Forms.CheckBox CheckBoxMosfet;
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.CheckBox checkBoxAutoMode;
+        private System.Windows.Forms.CheckBox CheckBoxAlive;
     }
 }
 

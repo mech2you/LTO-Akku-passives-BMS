@@ -19,6 +19,7 @@ namespace BMS_Kommunikation_v1._0
         public double vinRef;
         public double vmin;
         public double vmax;
+        public double mvin;
         public bool mFet;
         public bool fehler;
         public bool datenOK;
@@ -45,6 +46,7 @@ namespace BMS_Kommunikation_v1._0
             vinRef = 0;
             vmin = 0;
             vmax = 0;
+            mvin = 0;
             mFet = false;
             fehler = false;
             datenOK = false;
